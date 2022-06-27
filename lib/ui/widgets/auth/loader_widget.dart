@@ -21,11 +21,13 @@ class _ViewModel {
   }
 
   void _goToAuthScreen() {
-    Navigator.of(context).pushNamedAndRemoveUntil(MainNavigationRouteNames.auth, (route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        MainNavigationRouteNames.auth, (route) => false);
   }
 
   void _goToAppScreen() {
-    Navigator.of(context).pushNamedAndRemoveUntil(MainNavigationRouteNames.home, (route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        MainNavigationRouteNames.home, (route) => false);
   }
 }
 

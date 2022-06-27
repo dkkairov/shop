@@ -29,7 +29,6 @@ abstract class AppTextStyle {
   static TextStyle profileTotalSumTextStyle = const TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w700,
-
   );
 
   // ProductCard

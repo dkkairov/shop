@@ -22,13 +22,15 @@ class _ProductGroupListScreenState extends State<ProductGroupListScreen> {
 
   @override
   void initState() {
-    connection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      if(result == ConnectivityResult.none){
+    connection = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.none) {
         setState(() {
           isoffline = true;
           _title = 'Нет подключения к интернету';
         });
-      }else {
+      } else {
         setState(() {
           isoffline = false;
           _title = 'Wish Swish';
@@ -44,7 +46,6 @@ class _ProductGroupListScreenState extends State<ProductGroupListScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final _model = context.read<ProductModel>();
@@ -52,9 +53,9 @@ class _ProductGroupListScreenState extends State<ProductGroupListScreen> {
         appBar: AppBar(
           title: Text(_title),
           actions: [
-            IconButton (
+            IconButton(
               icon: const Icon(Icons.format_paint),
-              onPressed: (){
+              onPressed: () {
                 Provider.of<ThemeModel>(context, listen: false).toggleTheme();
               },
             ),
@@ -69,8 +70,7 @@ class _ProductGroupListScreenState extends State<ProductGroupListScreen> {
             _TitleWidget(),
             _CatalogueWidget(),
           ],
-        )
-    );
+        ));
   }
 }
 
@@ -85,9 +85,7 @@ class _TitleWidget extends StatelessWidget {
             child: Text(
               'Каталог',
               style: AppTextStyle.headerTextStyle,
-            )
-        )
-    );
+            )));
   }
 }
 
@@ -107,47 +105,48 @@ class _CatalogueWidget extends StatelessWidget {
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 20.0,
         ),
-        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-          final name = groupList[index].name;
-          final quantity = groupList[index].quantity.toString();
-          final image = groupList[index].image;
-          return Stack(
-            children: [
-              Column(
-                children: [
-                  AspectRatio(
-                    aspectRatio: 12.0 / 9.0,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      clipBehavior: Clip.hardEdge,
-                      child: image != '' ? Image.network(image) : Image.network(AppImages.emptyLogo),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Text(name)
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+            final name = groupList[index].name;
+            final quantity = groupList[index].quantity.toString();
+            final image = groupList[index].image;
+            return Stack(
+              children: [
+                Column(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 12.0 / 9.0,
+                      child: ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        clipBehavior: Clip.hardEdge,
+                        child: image != ''
+                            ? Image.network(image)
+                            : Image.network(AppImages.emptyLogo),
                       ),
-                      Text('$quantity шт.')
-                    ],
-                  )
-                ],
-              ),
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    ProductListScreen.routeName,
-                    arguments: ScreenArguments(index),
-                  ),
-                )
-              )
-            ],
-          );
-        },
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(child: Text(name)),
+                        Text('$quantity шт.')
+                      ],
+                    )
+                  ],
+                ),
+                Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        ProductListScreen.routeName,
+                        arguments: ScreenArguments(index),
+                      ),
+                    ))
+              ],
+            );
+          },
           childCount: groupList.length,
         ),
       ),

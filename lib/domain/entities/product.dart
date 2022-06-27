@@ -14,5 +14,4 @@ class Product {
     required this.image,
     required this.productGroup,
   });
-
 }

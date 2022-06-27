@@ -4,5 +4,4 @@ class ProductGroup {
   final String image;
 
   ProductGroup(this.name, this.quantity, this.image);
-
 }

@@ -45,32 +45,28 @@ class _TotalInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _total = context.watch<ProductModel>().cartTotal.toString();
     return SliverToBoxAdapter(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Text(
+        child: Column(
+          children: [
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
                       'Итого',
                       style: AppTextStyle.cartTotalSumTextStyle,
+                    )),
+                    Text(
+                      '$_total р',
+                      style: AppTextStyle.cartTotalSumTextStyle,
                     )
-                ),
-                Text(
-                  '$_total р',
-                  style: AppTextStyle.cartTotalSumTextStyle,
-                )
-              ],
-            )
-          ),
-          const Divider(height: 2)
-        ],
-      )
-    );
+                  ],
+                )),
+            const Divider(height: 2)
+      ],
+    ));
   }
 }
-
 
 class _CatalogueWidget extends StatelessWidget {
   const _CatalogueWidget({Key? key}) : super(key: key);
@@ -79,9 +75,13 @@ class _CatalogueWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _model = context.watch<ProductModel>();
     final _cartIdList = _model.cartIdList.toList();
-    final List<Product> cartList = _model.productService.loadProducts().where((element) => _cartIdList.contains(element.id)).toList();
+    final List<Product> cartList = _model.productService
+        .loadProducts()
+        .where((element) => _cartIdList.contains(element.id))
+        .toList();
     return SliverList(
-        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
           final _name = cartList[index].name;
           final _price = cartList[index].price;
           final _priceString = _price.toString();
@@ -101,9 +101,12 @@ class _CatalogueWidget extends StatelessWidget {
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10.0),
                       leading: ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
                         clipBehavior: Clip.hardEdge,
-                        child: _image != '' ? Image.network(_image) : Image.network(AppImages.emptyLogo),
+                        child: _image != ''
+                            ? Image.network(_image)
+                            : Image.network(AppImages.emptyLogo),
                       ),
                       title: RichText(
                         text: TextSpan(
@@ -111,13 +114,14 @@ class _CatalogueWidget extends StatelessWidget {
                             style: AppTextStyle.productCardNameTextStyle,
                             children: [
                               const WidgetSpan(
-                                child: Icon(Icons.star, size: 20, color: AppColors.mainGold),
+                                child: Icon(Icons.star,
+                                    size: 20, color: AppColors.mainGold),
                               ),
-                              TextSpan(text: ' $_rating',
+                              TextSpan(
+                                text: ' $_rating',
                                 style: AppTextStyle.productCardRatingTextStyle,
                               ),
-                            ]
-                        ),
+                            ]),
                       ),
                       subtitle: Text(
                         '$_priceString р',
@@ -127,22 +131,27 @@ class _CatalogueWidget extends StatelessWidget {
                         icon: const Icon(Icons.delete),
                         color: AppColors.mainBlue,
                         onPressed: () => _model.deleteFromCart(index, _price),
-                      )
-                  ),
+                      )),
                 ),
               ),
               const SizedBox(height: 5),
               Row(
                 children: const [
-                  Expanded(child: SizedBox.shrink(), flex: 1,),
-                  Expanded(child: Divider(height: 2), flex: 4,)
+                  Expanded(
+                    child: SizedBox.shrink(),
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child: Divider(height: 2),
+                    flex: 4,
+                  )
                 ],
               )
             ],
           );
         },
-          childCount: cartList.length,
-        ),
+        childCount: cartList.length,
+      ),
     );
   }
 }

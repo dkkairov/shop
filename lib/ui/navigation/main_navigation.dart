@@ -25,31 +25,21 @@ class MainNavigation {
         );
       case MainNavigationRouteNames.auth:
         return PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) =>
-              AuthWidget.create(),
+          pageBuilder: (context, animation1, animation2) => AuthWidget.create(),
           transitionDuration: Duration.zero,
         );
       case MainNavigationRouteNames.home:
         return PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) =>
-              HomeScreen(),
+          pageBuilder: (context, animation1, animation2) => HomeScreen(),
           transitionDuration: Duration.zero,
         );
       case ProductListScreen.routeName:
         final args = settings.arguments as ScreenArguments;
         return MaterialPageRoute(
           builder: (context) {
-            return ProductListScreen(
-              groupIndex: args.groupIndex
-            );
+            return ProductListScreen(groupIndex: args.groupIndex);
           },
         );
-      // case MainNavigationRouteNames.productList:
-      //   return PageRouteBuilder(
-      //     pageBuilder: (context, animation1, animation2) =>
-      //         ProductListScreen(),
-      //     transitionDuration: Duration.zero,
-      //   );
       default:
         const widget = Scaffold(body: Center(child: Text('Navigation error')));
         return MaterialPageRoute(builder: (_) => widget);
@@ -59,7 +49,7 @@ class MainNavigation {
   static void resetNavigation(BuildContext context) {
     Navigator.of(context).pushNamedAndRemoveUntil(
       MainNavigationRouteNames.loader,
-          (route) => false,
+      (route) => false,
     );
   }
 }

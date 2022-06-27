@@ -16,5 +16,4 @@ class ProductGroupDataProvider {
   List<ProductGroup> loadProductGroups()  {
     return _groupList;
   }
-
 }

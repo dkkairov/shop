@@ -66,8 +66,7 @@ class _ViewModel extends ChangeNotifier {
       _state.isAuthInProcess = false;
       notifyListeners();
     } catch (exeption) {
-      _state.authErrorTitle =
-      'Произошла ошибка, попропуйте повторить позже';
+      _state.authErrorTitle = 'Произошла ошибка, попропуйте повторить позже';
       _state.isAuthInProcess = false;
       notifyListeners();
     }
@@ -106,7 +105,8 @@ class AuthWidget extends StatelessWidget {
                 const SizedBox(height: 20),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text('Авторизация',style: AppTextStyle.headerTextStyle),
+                  child:
+                      Text('Авторизация', style: AppTextStyle.headerTextStyle),
                 ),
                 const SizedBox(height: 20),
                 const _LoginWidget(),
@@ -163,7 +163,7 @@ class _ErrorTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authErrorTitle =
-    context.select((_ViewModel value) => value.state.authErrorTitle);
+        context.select((_ViewModel value) => value.state.authErrorTitle);
     return Text(authErrorTitle);
   }
 }
@@ -175,7 +175,7 @@ class AuthButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<_ViewModel>();
     final authButtonState =
-    context.select((_ViewModel value) => value.state.authButtonState);
+        context.select((_ViewModel value) => value.state.authButtonState);
 
     final onPressed = authButtonState == _ViewModelAuthButtonState.canSubmit
         ? model.onAuthButtonPressed

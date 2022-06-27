@@ -4,8 +4,8 @@ import 'package:shop/ui/theme/app_colors.dart';
 ThemeData darkTheme = ThemeData.dark().copyWith(
   primaryColor: AppColors.mainBlue,
   textTheme: const TextTheme(
-    subtitle1: TextStyle(color: AppColors.mainWhite),
-    subtitle2: TextStyle(color: AppColors.mainWhite)),
+      subtitle1: TextStyle(color: AppColors.mainWhite),
+      subtitle2: TextStyle(color: AppColors.mainWhite)),
   appBarTheme: const AppBarTheme(color: AppColors.mainBlue),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: AppColors.mainBlue,
@@ -15,20 +15,20 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   ),
   buttonTheme: const ButtonThemeData(
     buttonColor: AppColors.mainBlue,
-  )
+  ),
 );
 
 ThemeData lightTheme = ThemeData.light().copyWith(
   primaryColor: AppColors.mainBlack,
   scaffoldBackgroundColor: AppColors.mainWhite,
   textTheme: const TextTheme(
-    bodyText1: TextStyle(color: AppColors.mainBlack),
-    bodyText2: TextStyle(color: AppColors.mainBlack),
-    subtitle1: TextStyle(color: AppColors.mainBlack),
-    subtitle2: TextStyle(color: AppColors.mainBlack)),
+      bodyText1: TextStyle(color: AppColors.mainBlack),
+      bodyText2: TextStyle(color: AppColors.mainBlack),
+      subtitle1: TextStyle(color: AppColors.mainBlack),
+      subtitle2: TextStyle(color: AppColors.mainBlack)),
   appBarTheme: const AppBarTheme(
-    color: AppColors.mainBlue,
-    actionsIconTheme: IconThemeData(color: AppColors.mainWhite)),
+      color: AppColors.mainBlue,
+      actionsIconTheme: IconThemeData(color: AppColors.mainWhite)),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: AppColors.mainWhite,
     elevation: 10,
@@ -37,5 +37,5 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   ),
   buttonTheme: const ButtonThemeData(
     buttonColor: AppColors.mainBlue,
-  )
+  ),
 );

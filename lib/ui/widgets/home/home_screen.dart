@@ -5,7 +5,6 @@ import 'package:shop/ui/widgets/cart/cart_screen.dart';
 import 'package:shop/ui/widgets/product_list/product_group_list_screen.dart';
 import 'package:shop/ui/widgets/profile/profile_screen.dart';
 
-
 class ScreenIndexModel extends ChangeNotifier {
   int screenIndex = 0;
   int get fetchCurrentScreenIndex {
@@ -44,8 +43,7 @@ class HomeScreen extends StatelessWidget {
               label: '',
               icon: Icon(
                   (currentScreenIndex == 0) ? Icons.home : Icons.home_outlined),
-              backgroundColor: AppColors.mainWhite
-          ),
+              backgroundColor: AppColors.mainWhite),
           BottomNavigationBarItem(
             label: '',
             icon: Icon((currentScreenIndex == 1)
@@ -63,22 +61,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
