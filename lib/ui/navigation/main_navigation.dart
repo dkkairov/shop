@@ -35,14 +35,23 @@ class MainNavigation {
               HomeScreen(),
           transitionDuration: Duration.zero,
         );
-      case MainNavigationRouteNames.productList:
-        return PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) =>
-              ProductListScreen(),
-          transitionDuration: Duration.zero,
+      case ProductListScreen.routeName:
+        final args = settings.arguments as ScreenArguments;
+        return MaterialPageRoute(
+          builder: (context) {
+            return ProductListScreen(
+              groupIndex: args.groupIndex
+            );
+          },
         );
+      // case MainNavigationRouteNames.productList:
+      //   return PageRouteBuilder(
+      //     pageBuilder: (context, animation1, animation2) =>
+      //         ProductListScreen(),
+      //     transitionDuration: Duration.zero,
+      //   );
       default:
-        const widget = Text('Navigation error');
+        const widget = Scaffold(body: Center(child: Text('Navigation error')));
         return MaterialPageRoute(builder: (_) => widget);
     }
   }

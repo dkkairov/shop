@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shop/domain/data_providers/product_data_provider.dart';
 import 'package:shop/domain/data_providers/product_group_data_provider.dart';
-import 'package:shop/domain/entities/order.dart';
-import 'package:shop/domain/entities/product.dart';
+import 'package:shop/domain/data_providers/user_data_provider.dart';
 import 'package:shop/domain/services/auth_service.dart';
 import 'package:shop/ui/navigation/main_navigation.dart';
 
-class ProductGroupListModel extends ChangeNotifier {
+class ProductModel extends ChangeNotifier {
   final _authService = AuthService();
   final productGroupService = ProductGroupDataProvider();
   final productService = ProductDataProvider();
+  final user = UserDataProvider().loadValue();
 
   List<int> cartIdList = [];
+  int cartTotal = 0;
   List<List<int>> ordersList = [];
 
   Future<void> onLogoutPressed(BuildContext context) async {
@@ -19,27 +20,26 @@ class ProductGroupListModel extends ChangeNotifier {
     MainNavigation.showLoader(context);
   }
 
-  void addToCart(int index) {
+  void addToCart(int index, int price) {
     cartIdList.add(index);
+    cartTotal = cartTotal + price;
     notifyListeners();
-    print('cartIdList: $cartIdList');
   }
 
-  void deleteFromCart(int index) {
+  void deleteFromCart(int index, int price) {
     cartIdList.removeAt(index);
+    cartTotal = cartTotal - price;
     notifyListeners();
-    print('cartIdList: $cartIdList');
   }
 
-  void addOrder(list) {
+  void addOrder(List<int> list) {
     ordersList.add(list);
     cartIdList.clear();
+    cartTotal = 0;
     notifyListeners();
-    print('ordersList: $ordersList');
-    print('cartIdList: $cartIdList');
   }
 
-  int sumOrderTotal(ordersList, index) {
+  int sumOrderTotal(List<List<int>> ordersList, index) {
     int _total = 0;
     for (var element in ordersList[index]) {
       final _price = productService.getProduct(element).price;

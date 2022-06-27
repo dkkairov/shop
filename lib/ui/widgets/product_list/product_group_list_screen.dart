@@ -1,18 +1,56 @@
+import 'dart:async';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/domain/entities/theme.dart';
 import 'package:shop/resources/resources.dart';
-import 'package:shop/ui/navigation/main_navigation.dart';
-import 'package:shop/ui/widgets/home/product_group_list_model.dart';
+import 'package:shop/ui/providers/product_provider.dart';
+import 'package:shop/ui/theme/app_text_styles.dart';
+import 'package:shop/ui/widgets/product_list/product_list_screen.dart';
 
-class ProductGroupListScreen extends StatelessWidget {
+class ProductGroupListScreen extends StatefulWidget {
   const ProductGroupListScreen({Key? key}) : super(key: key);
 
   @override
+  State<ProductGroupListScreen> createState() => _ProductGroupListScreenState();
+}
+
+class _ProductGroupListScreenState extends State<ProductGroupListScreen> {
+  String _title = 'Wish Swish';
+  StreamSubscription? connection;
+  bool isoffline = false;
+
+  @override
+  void initState() {
+    connection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if(result == ConnectivityResult.none){
+        setState(() {
+          isoffline = true;
+          _title = 'Нет подключения к интернету';
+        });
+      }else {
+        setState(() {
+          isoffline = false;
+          _title = 'Wish Swish';
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    connection!.cancel();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    final _model = context.read<ProductGroupListModel>();
+    final _model = context.read<ProductModel>();
     return Scaffold(
         appBar: AppBar(
+          title: Text(_title),
           actions: [
             IconButton (
               icon: const Icon(Icons.format_paint),
@@ -44,7 +82,10 @@ class _TitleWidget extends StatelessWidget {
     return SliverToBoxAdapter(
         child: Container(
             padding: const EdgeInsets.all(20),
-            child: const Text('Каталог')
+            child: Text(
+              'Каталог',
+              style: AppTextStyle.headerTextStyle,
+            )
         )
     );
   }
@@ -55,14 +96,14 @@ class _CatalogueWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _model = context.read<ProductGroupListModel>();
+    final _model = context.read<ProductModel>();
     final groupList = _model.productGroupService.loadProductGroups();
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       sliver: SliverGrid(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.8,
+          childAspectRatio: 1,
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 20.0,
         ),
@@ -74,10 +115,13 @@ class _CatalogueWidget extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    clipBehavior: Clip.hardEdge,
-                    child: image != '' ? Image.network(image) : Image.network(AppImages.emptyLogo),
+                  AspectRatio(
+                    aspectRatio: 12.0 / 9.0,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      clipBehavior: Clip.hardEdge,
+                      child: image != '' ? Image.network(image) : Image.network(AppImages.emptyLogo),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Row(
@@ -94,8 +138,12 @@ class _CatalogueWidget extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(10),
-                  onTap: () => Navigator.pushNamed(context, MainNavigationRouteNames.productList),
-                ),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    ProductListScreen.routeName,
+                    arguments: ScreenArguments(index),
+                  ),
+                )
               )
             ],
           );

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/domain/data_providers/auth_api_provider.dart';
 import 'package:shop/domain/services/auth_service.dart';
+import 'package:shop/resources/resources.dart';
 import 'package:shop/ui/navigation/main_navigation.dart';
+import 'package:shop/ui/theme/app_colors.dart';
+import 'package:shop/ui/theme/app_text_styles.dart';
 
 enum _ViewModelAuthButtonState { canSubmit, authProcess, disable }
 
@@ -47,7 +50,7 @@ class _ViewModel extends ChangeNotifier {
     final login = _state.login;
     final password = _state.password;
 
-    if (login.isEmpty || password.isEmpty) return;
+    if (login.isEmpty || password.isEmpty || !login.contains('@')) return;
 
     _state.authErrorTitle = '';
     _state.isAuthInProcess = true;
@@ -84,20 +87,35 @@ class AuthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              _ErrorTitleWidget(),
-              SizedBox(height: 10),
-              _LoginWidget(),
-              SizedBox(height: 10),
-              _PasswordWiget(),
-              SizedBox(height: 10),
-              AuthButtonWidget(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: 250,
+                  child: AspectRatio(
+                    aspectRatio: 1 / 1,
+                    child: Image.network(AppImages.logo),
+                  ),
+                ),
+                const _ErrorTitleWidget(),
+                const SizedBox(height: 20),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Авторизация',style: AppTextStyle.headerTextStyle),
+                ),
+                const SizedBox(height: 20),
+                const _LoginWidget(),
+                const SizedBox(height: 20),
+                const _PasswordWidget(),
+                const SizedBox(height: 20),
+                const AuthButtonWidget(),
+              ],
+            ),
           ),
         ),
       ),
@@ -113,26 +131,28 @@ class _LoginWidget extends StatelessWidget {
     final model = context.read<_ViewModel>();
     return TextField(
       decoration: const InputDecoration(
-        labelText: 'Логин',
+        labelText: 'Введите email',
         border: OutlineInputBorder(),
       ),
+      keyboardType: TextInputType.emailAddress,
       onChanged: model.changeLogin,
     );
   }
 }
 
-class _PasswordWiget extends StatelessWidget {
-  const _PasswordWiget({Key? key}) : super(key: key);
+class _PasswordWidget extends StatelessWidget {
+  const _PasswordWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final model = context.read<_ViewModel>();
     return TextField(
       decoration: const InputDecoration(
-        labelText: 'Пароль',
+        labelText: 'Введите пароль',
         border: OutlineInputBorder(),
       ),
       onChanged: model.changePassword,
+      obscureText: true,
     );
   }
 }
@@ -163,9 +183,16 @@ class AuthButtonWidget extends StatelessWidget {
 
     final child = authButtonState == _ViewModelAuthButtonState.authProcess
         ? const CircularProgressIndicator()
-        : const Text('Авторизоваться');
+        : const Text('Войти');
     return ElevatedButton(
       onPressed: () => onPressed?.call(context),
+      style: ElevatedButton.styleFrom(
+        fixedSize: const Size(500, 50),
+        primary: AppColors.mainBlue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
       child: child,
     );
   }

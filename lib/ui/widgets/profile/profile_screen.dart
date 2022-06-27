@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:grouped_list/sliver_grouped_list.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/domain/entities/product.dart';
 import 'package:shop/resources/resources.dart';
 import 'package:shop/ui/theme/app_colors.dart';
 import 'package:shop/ui/theme/app_text_styles.dart';
-import 'package:shop/ui/widgets/home/product_group_list_model.dart';
-import 'package:shop/ui/widgets/product_list/product_list_model.dart';
-import 'package:shop/ui/widgets/profile/profile_model.dart';
+import 'package:shop/ui/providers/product_provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
-
-  static Widget create() {
-    return Provider(
-      create: (context) => ProfileModel(),
-      child: const ProfileScreen(),
-      lazy: false,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +27,7 @@ class _ProfileInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _user = context.read<ProfileModel>().user;
+    final _user = context.read<ProductModel>().user;
     final _firstName = _user.firstName;
     final _lastName = _user.lastName;
     final _avatar = _user.image;
@@ -60,19 +49,26 @@ class _ProfileInfoWidget extends StatelessWidget {
                             : const NetworkImage(AppImages.emptyLogo)
                     ),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 30),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(_firstName),
-                      Text(_lastName),
+                      Text(_firstName,
+                      style: AppTextStyle.profileNameTextStyle,
+                      ),
+                      Text(_lastName,
+                        style: AppTextStyle.profileNameTextStyle,
+                      ),
                     ],
                   )
                 ],
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
-                children: const [
-                  Text('История покупок')
+                children: [
+                  Text('История покупок',
+                    style: AppTextStyle.historyTextStyle,
+                  )
                 ],
               )
             ],
@@ -88,22 +84,28 @@ class _OrdersListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _groupModel = context.watch<ProductGroupListModel>();
+    final _groupModel = context.watch<ProductModel>();
     final _ordersList = _groupModel.ordersList.toList();
     return SliverToBoxAdapter(
       child: Column(
         children: [
         ListView.builder(
           shrinkWrap: true,
-          scrollDirection: Axis.vertical,
           itemCount: _ordersList.length,
           itemBuilder: (BuildContext context, int index) {
-            final _orderNumber = index;
+            final _orderNumber = index + 1;
             final _orderSum = _groupModel.sumOrderTotal(_ordersList, index).toString();
             return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              color: AppColors.mainLightGrey,
+              decoration: BoxDecoration(
+                color: AppColors.mainLightGrey,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: AppColors.mainWhite,
+                  width: 0.5
+                ),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,8 +115,8 @@ class _OrdersListWidget extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(child: Text(
-                            'Заказ №$_orderNumber',
-                          style: AppTextStyle.orderNameTextStyle,
+                            'Заказ № $_orderNumber',
+                          style: AppTextStyle.boldTextStyle,
                         )),
                         Container(
                           decoration: BoxDecoration(
@@ -128,9 +130,9 @@ class _OrdersListWidget extends StatelessWidget {
                             child: SizedBox(
                               child: Center(child: Text(
                                 '$_orderSum ₽',
-                                style: AppTextStyle.totalSumTextStyle,
+                                style: AppTextStyle.profileTotalSumTextStyle,
                               )),
-                              width: 45,
+                              width: 50,
                             ),
                           ),
                         )
@@ -139,21 +141,25 @@ class _OrdersListWidget extends StatelessWidget {
                   ),
                   ListView.builder(
                       shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       itemCount: _ordersList[index].length,
                       itemBuilder: (BuildContext context, int itemIndex) {
-                        final _model = context.read<ProductListModel>();
+                        final _model = context.read<ProductModel>();
                         final List<Product> _productList = _model.productService
                             .loadProducts().where((element) => _ordersList[index]
                             .contains(element.id)).toList();
                         final _name = _productList[itemIndex].name;
                         final _price = _productList[itemIndex].price.toString();
-                        return Row(
-                          children: [
-                            Text(_name),
-                            Text(_price),
-                          ],
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Text(_name)
+                              ),
+                              Text('$_price ₽'),
+                            ],
+                          ),
                         );
                       }
                   ),

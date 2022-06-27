@@ -3,6 +3,6 @@ part of 'resources.dart';
 class AppImages {
   AppImages._();
 
-  static const String emptyLogo = 'http://ftp.funet.fi/pub/TeX/CTAN/macros/latex/contrib/mwe/example-image-1x1.jpg';
-  static const String usdAccount = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/US_flag_large_51_stars.png/1024px-US_flag_large_51_stars.png';
+  static const String emptyLogo = 'https://n1s2.hsmedia.ru/d8/80/0b/d8800b6c922a52b207406234fed9aa0c/728x546_1_79158a87cfdffec9fa310109ca17431a@1708x1281_0xac120003_3571839591619686538.jpg';
+  static const String logo = 'https://i.ibb.co/kXw2W9V/2022-06-28-00-45-03.png';
 }

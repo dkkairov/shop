@@ -11,6 +11,7 @@ class ThemeModel extends ChangeNotifier {
     if (_themeType == ThemeType.dark) {
       currentTheme = lightTheme;
       _themeType = ThemeType.light;
+
       return notifyListeners();
     }
 
