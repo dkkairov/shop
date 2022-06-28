@@ -28,7 +28,7 @@ class _ProductGroupListScreenState extends State<ProductGroupListScreen> {
       if (result == ConnectivityResult.none) {
         setState(() {
           isoffline = true;
-          _title = 'Нет подключения к интернету';
+          _title = 'Нет подключения';
         });
       } else {
         setState(() {
