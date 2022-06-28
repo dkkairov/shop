@@ -3,7 +3,7 @@
 <br>
 
 Тестовое задание по верстке экрана согласно дизайну в Figma.
-Слева дизайн в Figma, справа верстка.
+<br>
 <br>
 ![alt text](https://github.com/dkkairov/shop/blob/main/github/shop.png?raw=true)
 <br>
