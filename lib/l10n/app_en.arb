@@ -1,3 +1,11 @@
 {
-  "appTitle": "Heroes of Computer Science"
+  "appTitle": "Shop",
+  "catalogue": "Catalogue",
+  "orderHistory": "Order history",
+  "order": "Order",
+  "total": "Total",
+  "emailInput": "Enter email",
+  "passwordInput": "Enter password",
+  "signIn": "Sign in",
+  "pay": "Pay"
 }

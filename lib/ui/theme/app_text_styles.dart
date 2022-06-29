@@ -29,20 +29,44 @@ abstract class AppTextStyle {
   static TextStyle profileTotalSumTextStyle = const TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w700,
+    color: AppColors.mainBlack,
   );
 
   // ProductCard
-  static TextStyle productCardNameTextStyle = const TextStyle(
+  static TextStyle productCardTextStyle = const TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    color: AppColors.mainBlack,
+  );
+  //// Dark
+  static TextStyle productCardNameDarkTextStyle = const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.mainWhite,
+  );
+  static TextStyle productCardRatingDarkTextStyle = const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    color: AppColors.mainWhite,
+  );
+  static TextStyle productCardPriceDarkTextStyle = const TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    color: AppColors.mainWhite,
+  );
+
+  //// Light
+  static TextStyle productCardNameLightTextStyle = const TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: AppColors.mainBlack,
   );
-  static TextStyle productCardRatingTextStyle = const TextStyle(
+  static TextStyle productCardRatingLightTextStyle = const TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w700,
     color: AppColors.mainBlack,
   );
-  static TextStyle productCardPriceTextStyle = const TextStyle(
+  static TextStyle productCardPriceLightTextStyle = const TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w700,
     color: AppColors.mainBlack,

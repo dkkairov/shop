@@ -8,6 +8,8 @@ import 'package:shop/ui/theme/app_text_styles.dart';
 import 'package:shop/domain/entities/product.dart';
 import 'package:shop/ui/providers/product_provider.dart';
 
+import '../../theme/app_theme_data.dart';
+
 class ProductListScreen extends StatelessWidget {
   final int groupIndex;
   const ProductListScreen({Key? key, required this.groupIndex})
@@ -43,6 +45,7 @@ class ProductListScreen extends StatelessWidget {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
+                  final _theme = Provider.of<ThemeModel>(context, listen: false).currentTheme;
                   final _productId = productListInGroup[index].id;
                   final _name = productListInGroup[index].name;
                   final _price = productListInGroup[index].price;
@@ -70,7 +73,9 @@ class ProductListScreen extends StatelessWidget {
                           title: RichText(
                             text: TextSpan(
                                 text: '$_name   ',
-                                style: AppTextStyle.productCardNameTextStyle,
+                                style: _theme != lightTheme
+                                    ? AppTextStyle.productCardNameDarkTextStyle
+                                    : AppTextStyle.productCardNameLightTextStyle,
                                 children: [
                                   const WidgetSpan(
                                     child: Icon(Icons.star,
@@ -78,20 +83,23 @@ class ProductListScreen extends StatelessWidget {
                                   ),
                                   TextSpan(
                                     text: ' $_rating',
-                                    style:
-                                        AppTextStyle.productCardRatingTextStyle,
+                                    style: _theme != lightTheme
+                                        ? AppTextStyle.productCardRatingDarkTextStyle
+                                        : AppTextStyle.productCardRatingLightTextStyle,
                                   ),
                                 ]),
                           ),
                           subtitle: Text(
                             '$_priceString р',
-                            style: AppTextStyle.productCardPriceTextStyle,
+                            style:  _theme != lightTheme
+                              ? AppTextStyle.productCardPriceDarkTextStyle
+                              : AppTextStyle.productCardPriceLightTextStyle,
                           ),
                           trailing: IconButton(
                             icon: const Icon(Icons.shopping_cart),
                             color: AppColors.mainBlue,
                             onPressed: () =>
-                                _groupModel.addToCart(_productId, _price),
+                                _groupModel.addToCart(_productId),
                           )),
                     ),
                   );

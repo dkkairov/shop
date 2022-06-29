@@ -6,6 +6,7 @@ import 'package:shop/resources/resources.dart';
 import 'package:shop/ui/navigation/main_navigation.dart';
 import 'package:shop/ui/theme/app_colors.dart';
 import 'package:shop/ui/theme/app_text_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum _ViewModelAuthButtonState { canSubmit, authProcess, disable }
 
@@ -85,6 +86,7 @@ class AuthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Padding(
@@ -106,7 +108,7 @@ class AuthWidget extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   child:
-                      Text('Авторизация', style: AppTextStyle.headerTextStyle),
+                      Text(t?.signIn ?? 'Sign in', style: AppTextStyle.headerTextStyle),
                 ),
                 const SizedBox(height: 20),
                 const _LoginWidget(),
@@ -128,11 +130,12 @@ class _LoginWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     final model = context.read<_ViewModel>();
     return TextField(
-      decoration: const InputDecoration(
-        labelText: 'Введите email',
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        labelText: t?.emailInput ?? 'Enter email',
+        border: const OutlineInputBorder(),
       ),
       keyboardType: TextInputType.emailAddress,
       onChanged: model.changeLogin,
@@ -145,11 +148,12 @@ class _PasswordWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     final model = context.read<_ViewModel>();
     return TextField(
-      decoration: const InputDecoration(
-        labelText: 'Введите пароль',
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        labelText: t?.passwordInput ?? 'Enter password',
+        border: const OutlineInputBorder(),
       ),
       onChanged: model.changePassword,
       obscureText: true,

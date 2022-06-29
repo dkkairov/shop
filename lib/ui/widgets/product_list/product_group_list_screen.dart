@@ -7,6 +7,7 @@ import 'package:shop/resources/resources.dart';
 import 'package:shop/ui/providers/product_provider.dart';
 import 'package:shop/ui/theme/app_text_styles.dart';
 import 'package:shop/ui/widgets/product_list/product_list_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductGroupListScreen extends StatefulWidget {
   const ProductGroupListScreen({Key? key}) : super(key: key);
@@ -79,11 +80,12 @@ class _TitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     return SliverToBoxAdapter(
         child: Container(
             padding: const EdgeInsets.all(20),
             child: Text(
-              'Каталог',
+              t?.catalogue ?? 'Catalogue',
               style: AppTextStyle.headerTextStyle,
             )));
   }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop/domain/entities/product.dart';
 import 'package:shop/resources/resources.dart';
 import 'package:shop/ui/theme/app_colors.dart';
 import 'package:shop/ui/theme/app_text_styles.dart';
 import 'package:shop/ui/providers/product_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -27,6 +27,7 @@ class _ProfileInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     final _user = context.read<ProductModel>().user;
     final _firstName = _user.firstName;
     final _lastName = _user.lastName;
@@ -68,7 +69,7 @@ class _ProfileInfoWidget extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'История покупок',
+                  t?.orderHistory ?? 'Order history',
                   style: AppTextStyle.historyTextStyle,
                 )
               ],
@@ -85,18 +86,19 @@ class _OrdersListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _groupModel = context.watch<ProductModel>();
-    final _ordersList = _groupModel.ordersList.toList();
+    final _model = context.watch<ProductModel>();
+    final _ordersList = _model.ordersList;
+    var t = AppLocalizations.of(context);
     return SliverToBoxAdapter(
       child: Column(
         children: [
           ListView.builder(
+              physics: const ClampingScrollPhysics(),
               shrinkWrap: true,
               itemCount: _ordersList.length,
               itemBuilder: (BuildContext context, int index) {
                 final _orderNumber = index + 1;
-                final _orderSum =
-                    _groupModel.sumOrderTotal(_ordersList, index).toString();
+                final _orderSum = _model.sumOrderTotal(_ordersList, index).toString();
                 return Container(
                   margin:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 10),
@@ -117,8 +119,8 @@ class _OrdersListWidget extends StatelessWidget {
                           children: [
                             Expanded(
                                 child: Text(
-                              'Заказ № $_orderNumber',
-                              style: AppTextStyle.boldTextStyle,
+                              '${t?.order ?? 'Order'} № $_orderNumber',
+                              style: AppTextStyle.productCardTextStyle,
                             )),
                             Container(
                               decoration: BoxDecoration(
@@ -143,25 +145,18 @@ class _OrdersListWidget extends StatelessWidget {
                         ),
                       ),
                       ListView.builder(
+                          physics: const ClampingScrollPhysics(),
                           shrinkWrap: true,
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           itemCount: _ordersList[index].length,
                           itemBuilder: (BuildContext context, int itemIndex) {
-                            final _model = context.read<ProductModel>();
-                            final List<Product> _productList = _model
-                                .productService
-                                .loadProducts()
-                                .where((element) =>
-                                    _ordersList[index].contains(element.id))
-                                .toList();
-                            final _name = _productList[itemIndex].name;
-                            final _price =
-                                _productList[itemIndex].price.toString();
+                            final _name = _ordersList[index][itemIndex].name;
+                            final _price = _ordersList[index][itemIndex].price.toString();
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8),
                               child: Row(
                                 children: [
-                                  Expanded(child: Text(_name)),
+                                  Expanded(child: Text(_name),),
                                   Text('$_price ₽'),
                                 ],
                               ),

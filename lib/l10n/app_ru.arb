@@ -1,3 +1,11 @@
 {
-  "appTitle": "Shop"
+  "appTitle": "Магазин",
+  "catalogue": "Каталог",
+  "orderHistory": "История покупок",
+  "order": "Заказ",
+  "total": "Итого",
+  "emailInput": "Введите email",
+  "passwordInput": "Введите пароль",
+  "signIn": "Войти",
+  "pay": "Оплатить"
 }

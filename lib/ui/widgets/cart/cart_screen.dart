@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/domain/entities/theme.dart';
 import 'package:shop/resources/resources.dart';
 import 'package:shop/ui/theme/app_colors.dart';
 import 'package:shop/ui/theme/app_text_styles.dart';
 import 'package:shop/domain/entities/product.dart';
 import 'package:shop/ui/providers/product_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shop/ui/theme/app_theme_data.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     final _model = context.watch<ProductModel>();
-    final _cartIdList = _model.cartIdList.toList();
+    final _cartIdList = _model.cartList.toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wish Swish'),
@@ -31,7 +35,7 @@ class CartScreen extends StatelessWidget {
             fixedSize: const Size(100, 50),
             primary: AppColors.mainBlue,
           ),
-          child: const Text('Оплатить'),
+          child: Text(t?.pay ?? 'Pay'),
         ),
       ),
     );
@@ -43,6 +47,7 @@ class _TotalInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     final _total = context.watch<ProductModel>().cartTotal.toString();
     return SliverToBoxAdapter(
         child: Column(
@@ -53,11 +58,11 @@ class _TotalInfoWidget extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Text(
-                      'Итого',
+                      t?.total ?? 'Total',
                       style: AppTextStyle.cartTotalSumTextStyle,
                     )),
                     Text(
-                      '$_total р',
+                      '$_total ₽',
                       style: AppTextStyle.cartTotalSumTextStyle,
                     )
                   ],
@@ -74,19 +79,20 @@ class _CatalogueWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _model = context.watch<ProductModel>();
-    final _cartIdList = _model.cartIdList.toList();
-    final List<Product> cartList = _model.productService
-        .loadProducts()
-        .where((element) => _cartIdList.contains(element.id))
-        .toList();
+    final _cartList = _model.cartList;
+    // final List<Product> cartList = _model.productService
+    //     .loadProducts()
+    //     .where((element) => _cartList.contains(element.id))
+    //     .toList();
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          final _name = cartList[index].name;
-          final _price = cartList[index].price;
+          final _theme = Provider.of<ThemeModel>(context, listen: false).currentTheme;
+          final _name = _cartList[index].name;
+          final _price = _cartList[index].price;
           final _priceString = _price.toString();
-          final _rating = cartList[index].rating.toString();
-          final _image = cartList[index].image;
+          final _rating = _cartList[index].rating.toString();
+          final _image = _cartList[index].image;
           return Column(
             children: <Widget>[
               const SizedBox(height: 5),
@@ -111,7 +117,9 @@ class _CatalogueWidget extends StatelessWidget {
                       title: RichText(
                         text: TextSpan(
                             text: '$_name   ',
-                            style: AppTextStyle.productCardNameTextStyle,
+                            style: _theme != lightTheme
+                                ? AppTextStyle.productCardNameDarkTextStyle
+                                : AppTextStyle.productCardNameLightTextStyle,
                             children: [
                               const WidgetSpan(
                                 child: Icon(Icons.star,
@@ -119,13 +127,17 @@ class _CatalogueWidget extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: ' $_rating',
-                                style: AppTextStyle.productCardRatingTextStyle,
+                                style: _theme != lightTheme
+                                    ? AppTextStyle.productCardRatingDarkTextStyle
+                                    : AppTextStyle.productCardRatingLightTextStyle,
                               ),
                             ]),
                       ),
                       subtitle: Text(
                         '$_priceString р',
-                        style: AppTextStyle.productCardPriceTextStyle,
+                        style:  _theme != lightTheme
+                            ? AppTextStyle.productCardPriceDarkTextStyle
+                            : AppTextStyle.productCardPriceLightTextStyle,
                       ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
@@ -150,7 +162,7 @@ class _CatalogueWidget extends StatelessWidget {
             ],
           );
         },
-        childCount: cartList.length,
+        childCount: _cartList.length,
       ),
     );
   }
